@@ -30,7 +30,7 @@ def genStep(board, turn=0): # we first generate all possible iterations of our t
             genStep(newBoard, turn + 1)
 
 
-def playStep(board, turn=0):
+def playStep(board, turn=0): #play step is the training step and it plays against itself. This is also recursively defined with logic shown below.
     b_tup = tuple(board)
     if not steps[b_tup]: return 'loss' #if there are no future moves, that means that when generating, the prior move was the final move. ANd if the prior move was the final move, that of course means that the prior move was the final move, and hence loss.
 
@@ -96,7 +96,7 @@ loss_rates = []
 tie_rates = []
 
 total_iterations = 5000000
-eval_interval = 100000  # Evaluate every 1000 games
+eval_interval = 100000  # Evaluate every 100000 games
 
 for i in range(total_iterations):
     playStep([0] * 9, 0)
@@ -109,7 +109,7 @@ for i in range(total_iterations):
         loss_rates.append(l)
         tie_rates.append(t)
 
-# Export data
+# Export data to json to be able to be saved and used again.
 restructured_data = [[list(k), v] for k, v in steps.items()]
 with open("data_list.json", "w") as f:
     json.dump(restructured_data, f)
